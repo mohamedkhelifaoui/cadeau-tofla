@@ -1,0 +1,433 @@
+/* ================================================
+   GLOBALS.CSS — Dounia's Birthday & Ramadan Gift
+   ================================================
+   Color Palette:
+     - Deep Night Blue: #0a0a2e / #0d1137
+     - Gold:            #d4af37 / #f4c430
+     - Warm White:      #faf3e0
+     - Soft Beige:      #f5f0e1
+     - Rose Pink:       #e8a0bf
+   ================================================ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties (Design Tokens) ─── */
+@layer base {
+  :root {
+    /* Brand colors */
+    --color-night: 10 10 46;
+    /* #0a0a2e */
+    --color-night-deep: 13 17 55;
+    /* #0d1137 */
+    --color-gold: 212 175 55;
+    /* #d4af37 */
+    --color-gold-light: 244 196 48;
+    /* #f4c430 */
+    --color-warm-white: 250 243 224;
+    /* #faf3e0 */
+    --color-beige: 245 240 225;
+    /* #f5f0e1 */
+    --color-rose: 232 160 191;
+    /* #e8a0bf */
+    --color-rose-deep: 200 100 140;
+    /* deep rose */
+
+    /* Shadcn tokens remapped to our romantic palette */
+    --background: 234 50% 11%;
+    --foreground: 43 60% 93%;
+    --card: 234 50% 13%;
+    --card-foreground: 43 60% 93%;
+    --popover: 234 50% 11%;
+    --popover-foreground: 43 60% 93%;
+    --primary: 43 63% 52%;
+    --primary-foreground: 234 50% 11%;
+    --secondary: 234 30% 20%;
+    --secondary-foreground: 43 60% 93%;
+    --muted: 234 30% 18%;
+    --muted-foreground: 43 20% 60%;
+    --accent: 43 63% 52%;
+    --accent-foreground: 234 50% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 234 30% 22%;
+    --input: 234 30% 22%;
+    --ring: 43 63% 52%;
+    --radius: 0.75rem;
+  }
+}
+
+/* ─── Base Styles ─── */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-color: rgb(var(--color-night));
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Better Arabic text rendering */
+  [dir="rtl"],
+  .font-arabic {
+    font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+  }
+}
+
+/* ─── Utility Classes ─── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Gold gradient text */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #d4af37, #f4c430, #d4af37, #f4c430);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer-gold 4s ease-in-out infinite;
+  }
+
+  /* Glassmorphism card */
+  .glass {
+    background: rgba(13, 17, 55, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+  }
+
+  .glass-strong {
+    background: rgba(13, 17, 55, 0.65);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+  }
+
+  /* Gold glow on hover */
+  .glow-gold {
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3),
+      0 0 30px rgba(212, 175, 55, 0.1);
+  }
+
+  .glow-gold-hover:hover {
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.5),
+      0 0 50px rgba(212, 175, 55, 0.2);
+  }
+
+  /* Text shadow for gold glow */
+  .text-glow-gold {
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.6),
+      0 0 20px rgba(212, 175, 55, 0.3),
+      0 0 40px rgba(212, 175, 55, 0.1);
+  }
+
+  /* Soft pulse glow */
+  .animate-glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  /* Scrollbar styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(13, 17, 55, 0.3);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.4);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.6);
+  }
+}
+
+/* ─── Keyframe Animations ─── */
+
+/* Gold shimmer for gradient text */
+@keyframes shimmer-gold {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Gentle pulsing glow */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.4),
+      0 0 20px rgba(212, 175, 55, 0.2);
+  }
+
+  50% {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.8),
+      0 0 40px rgba(212, 175, 55, 0.4),
+      0 0 60px rgba(212, 175, 55, 0.2);
+  }
+}
+
+/* Star twinkle */
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Falling petal keyframes */
+@keyframes petal-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg) translateX(0);
+    opacity: 1;
+  }
+
+  25% {
+    transform: translateY(22vh) rotate(90deg) translateX(30px);
+  }
+
+  50% {
+    transform: translateY(48vh) rotate(180deg) translateX(-20px);
+    opacity: 0.8;
+  }
+
+  75% {
+    transform: translateY(72vh) rotate(270deg) translateX(25px);
+  }
+
+  100% {
+    transform: translateY(105vh) rotate(360deg) translateX(-10px);
+    opacity: 0;
+  }
+}
+
+/* Floating lantern keyframes */
+@keyframes lantern-float {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  25% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(-1deg);
+  }
+
+  75% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+}
+
+/* Lantern glow pulse */
+@keyframes lantern-glow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(244, 196, 48, 0.4));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 20px rgba(244, 196, 48, 0.8));
+  }
+}
+
+/* Moon glow */
+@keyframes moon-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 40px rgba(244, 196, 48, 0.3),
+      0 0 80px rgba(244, 196, 48, 0.15);
+  }
+
+  50% {
+    box-shadow: 0 0 60px rgba(244, 196, 48, 0.5),
+      0 0 120px rgba(244, 196, 48, 0.25);
+  }
+}
+
+/* Fade in up animation */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Gentle floating */
+@keyframes gentle-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Golden particle drift */
+@keyframes particle-drift {
+  0% {
+    transform: translateY(0) translateX(0) scale(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  90% {
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(-100vh) translateX(var(--drift-x, 50px)) scale(0.3);
+    opacity: 0;
+  }
+}
+
+/* Typing cursor blink */
+@keyframes cursor-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Soft breathing animation for sections */
+@keyframes breathe {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Heart beat for special elements */
+@keyframes heartbeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.15);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.1);
+  }
+}
+
+/* Shake animation for quiz */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-5px);
+  }
+
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* ─── Extra Utilities ─── */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* Aurora background drifting */
+@keyframes aurora-drift {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) translate(var(--aurora-x, 100px), var(--aurora-y, 80px)) scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* Shooting star rapid movement */
+@keyframes shooting-star {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(300px);
+    opacity: 0;
+  }
+}
