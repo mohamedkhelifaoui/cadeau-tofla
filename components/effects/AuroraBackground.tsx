@@ -33,16 +33,16 @@ const COLORS = [
 ];
 
 function generateOrbs(): OrbData[] {
-    return Array.from({ length: 8 }, (_, i) => ({
+    return Array.from({ length: 4 }, (_, i) => ({ // Reduced from 8 to 4 for performance
         id: i,
-        x: `${10 + Math.random() * 80}%`,
-        y: `${5 + Math.random() * 90}%`,
-        size: 250 + Math.random() * 400,
+        x: `${15 + Math.random() * 70}%`,
+        y: `${10 + Math.random() * 80}%`,
+        size: 200 + Math.random() * 300,
         color: COLORS[i % COLORS.length],
-        duration: 15 + Math.random() * 25,
-        delay: Math.random() * 10,
-        moveX: (Math.random() - 0.5) * 200,
-        moveY: (Math.random() - 0.5) * 150,
+        duration: 20 + Math.random() * 20,
+        delay: Math.random() * 8,
+        moveX: (Math.random() - 0.5) * 150,
+        moveY: (Math.random() - 0.5) * 100,
     }));
 }
 

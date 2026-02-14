@@ -13,7 +13,7 @@
 
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import GlassCard from "@/components/shared/GlassCard";
 
@@ -133,6 +133,14 @@ export default function QuizSection() {
     const [isWrong, setIsWrong] = useState(false);
     const [confettiTrigger, setConfettiTrigger] = useState(0);
 
+    // PERSISTENCE: Load state on mount
+    useEffect(() => {
+        const savedIndex = localStorage.getItem("dounia_quiz_index");
+        const savedCompleted = localStorage.getItem("dounia_quiz_completed");
+        if (savedIndex) setCurrentQuestionIndex(parseInt(savedIndex));
+        if (savedCompleted === "true") setIsCompleted(true);
+    }, []);
+
     const handleOptionClick = (isCorrect: boolean, index: number) => {
         setSelectedOption(index);
 
@@ -140,11 +148,14 @@ export default function QuizSection() {
             // Correct answer — trigger confetti burst
             setConfettiTrigger((prev) => prev + 1);
             setTimeout(() => {
-                if (currentQuestionIndex < QUESTIONS.length - 1) {
-                    setCurrentQuestionIndex((prev) => prev + 1);
+                const nextIndex = currentQuestionIndex + 1;
+                if (nextIndex < QUESTIONS.length) {
+                    setCurrentQuestionIndex(nextIndex);
+                    localStorage.setItem("dounia_quiz_index", String(nextIndex));
                     setSelectedOption(null);
                 } else {
                     setIsCompleted(true);
+                    localStorage.setItem("dounia_quiz_completed", "true");
                 }
             }, 1200);
         } else {

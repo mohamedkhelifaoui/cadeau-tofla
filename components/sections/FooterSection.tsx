@@ -62,7 +62,7 @@ export default function FooterSection() {
                         className="text-[#d4af37]/50 text-base font-[var(--font-amiri)]"
                         dir="rtl"
                     >
-                        زوجك الذي يحبك دائمًا 🤍
+                        زوجك المستقبلي 🤍
                     </p>
                 </motion.div>
 
@@ -92,7 +92,7 @@ export default function FooterSection() {
 
                 {/* ─── Copyright ─── */}
                 <p className="mt-8 text-[#faf3e0]/20 text-xs tracking-widest uppercase">
-                    Made with love — 2026
+                    W t9al9ini nogetlek a tofla 😂
                 </p>
             </div>
         </footer>

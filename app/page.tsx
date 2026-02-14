@@ -4,30 +4,33 @@
  * This is the root page that composes all sections and effects
  * into the final experience. It orchestrates:
  *
- *   1. Background effects (StarryNight, FallingPetals, FloatingLanterns, GoldenParticles)
- *   2. Music player (fixed position)
- *   3. Hero section with the love letter modal trigger
- *   4. Countdown to Ramadan & Birthday
- *   5. Interactive Lantern & Voice Message
- *   6. Photo gallery & Memory Sky
- *   7. Reasons & Quiz
- *   8. Wishes to Stars & Dua
- *   9. Romantic footer
+ *   1. Loading screen (until all assets are ready)
+ *   2. Background effects (StarryNight, FallingPetals, FloatingLanterns, GoldenParticles)
+ *   3. Music player (fixed position)
+ *   4. Hero section with the love letter modal trigger
+ *   5. Countdown to Ramadan & Birthday
+ *   6. Interactive Lantern & Voice Message
+ *   7. Photo gallery & Memory Sky
+ *   8. Reasons & Quiz
+ *   9. Wishes to Stars & Dua
+ *  10. Romantic footer
  *
  * This component manages the love letter modal open/close state.
  */
 
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+
+/* ─── Loading Screen & Media Context ─── */
+import LoadingScreen from "@/components/shared/LoadingScreen";
+import { MediaProvider } from "@/components/shared/MediaContext";
 
 /* ─── Background Effects ─── */
 import StarryNight from "@/components/effects/StarryNight";
-import FallingPetals from "@/components/effects/FallingPetals";
 import FloatingLanterns from "@/components/effects/FloatingLanterns";
 import GoldenParticles from "@/components/effects/GoldenParticles";
 import AuroraBackground from "@/components/effects/AuroraBackground";
-import ShootingStars from "@/components/effects/ShootingStars";
 
 /* ─── Shared Components ─── */
 import MusicPlayer from "@/components/shared/MusicPlayer";
@@ -53,89 +56,110 @@ import LoveLetterModal from "@/components/modals/LoveLetterModal";
 export default function HomePage() {
   /** Controls the love letter modal visibility */
   const [isLetterOpen, setIsLetterOpen] = useState(false);
+  /** Controls whether the page content is visible (after loading) */
+  const [isLoaded, setIsLoaded] = useState(false);
+  /** Stores preloaded blob URLs for all media */
+  const [blobUrls, setBlobUrls] = useState<Record<string, string>>({});
+
+  const handleLoaded = useCallback((urls: Record<string, string>) => {
+    setBlobUrls(urls);
+    setIsLoaded(true);
+  }, []);
 
   return (
     <>
       {/* ═══════════════════════════════════════════
-          BACKGROUND EFFECTS LAYER
-          These render behind all content (z-0 to z-10)
+          LOADING SCREEN — shown until all assets load
           ═══════════════════════════════════════════ */}
-      <AuroraBackground />
-      <ShootingStars />
-      <StarryNight />
-      <FloatingLanterns />
-      <GoldenParticles />
-      <FallingPetals />
+      {!isLoaded && <LoadingScreen onLoaded={handleLoaded} />}
 
       {/* ═══════════════════════════════════════════
+          PAGE CONTENT — only mounted after loading is complete
+          ═══════════════════════════════════════════ */}
+      {isLoaded && (
+        <MediaProvider media={{ blobUrls }}>
+          <div style={{ animation: "fadeIn 0.6s ease-in forwards" }}>
+            {/* ═══════════════════════════════════════════
+          BACKGROUND EFFECTS LAYER
+          Optimized: Reduced number of effects for better performance
+          ═══════════════════════════════════════════ */}
+            <AuroraBackground />
+            <StarryNight />
+            <FloatingLanterns />
+            <GoldenParticles />
+
+            {/* ═══════════════════════════════════════════
           FLOATING UI ELEMENTS
           Music player button (fixed z-50)
           ═══════════════════════════════════════════ */}
-      <MusicPlayer />
+            <MusicPlayer />
 
-      {/* ═══════════════════════════════════════════
+            {/* ═══════════════════════════════════════════
           PAGE CONTENT
           All sections render above effects (z-20+)
           ═══════════════════════════════════════════ */}
-      <main className="relative">
-        {/* 1. Hero — Grand entrance with greeting */}
-        <HeroSection onOpenLetter={() => setIsLetterOpen(true)} />
+            <main className="relative">
+              {/* 1. Hero — Grand entrance with greeting */}
+              <HeroSection onOpenLetter={() => setIsLetterOpen(true)} />
 
-        {/* Section Divider with Interactive Lantern */}
-        <div className="relative z-20 flex flex-col items-center justify-center py-10">
-          <InteractiveLantern />
-          <SectionDivider />
-        </div>
+              {/* Section Divider with Interactive Lantern */}
+              <div className="relative z-20 flex flex-col items-center justify-center py-10">
+                <InteractiveLantern />
+                <SectionDivider />
+              </div>
 
-        {/* 2. Countdown — Days until Ramadan & Birthday */}
-        <CountdownSection />
+              {/* 2. Countdown — Days until Ramadan & Birthday */}
+              <CountdownSection />
 
-        <SectionDivider />
+              <SectionDivider />
 
-        {/* 3. Voice Message — Audio player */}
-        <VoiceMessageSection />
+              {/* 3. Voice Message — Audio player */}
+              <VoiceMessageSection />
 
-        <SectionDivider />
+              <SectionDivider />
 
-        {/* 4. Gallery — Photo memories */}
-        <GallerySection />
+              {/* 4. Gallery — Photo memories */}
+              <GallerySection />
 
-        {/* 5. Memory Sky — Hidden messages */}
-        <MemorySkySection />
+              {/* 5. Memory Sky — Hidden messages */}
+              <MemorySkySection />
 
-        <SectionDivider />
+              <SectionDivider />
 
-        {/* 6. Reasons — Why I Love You */}
-        <ReasonsSection />
+              {/* 6. Reasons — Why I Love You */}
+              <ReasonsSection />
 
-        <SectionDivider />
+              <SectionDivider />
 
-        {/* 7. Love Quiz — Interactive game */}
-        <QuizSection />
+              {/* 7. Love Quiz — Interactive game */}
+              <QuizSection />
 
-        <SectionDivider />
+              <SectionDivider />
 
-        {/* 8. Wishes to Stars — User makes a wish */}
-        <WishesToStarsSection />
+              {/* 8. Wishes to Stars — User makes a wish */}
+              <WishesToStarsSection />
 
-        <SectionDivider />
+              <SectionDivider />
 
-        {/* 9. Dua — Prayer for Dounia */}
-        <DuaSection />
+              {/* 9. Dua — Prayer for Dounia */}
+              <DuaSection />
 
-        <SectionDivider />
+              <SectionDivider />
 
-        {/* 10. Footer — Romantic closing */}
-        <FooterSection />
-      </main>
+              {/* 10. Footer — Romantic closing */}
+              <FooterSection />
+            </main>
 
-      {/* ═══════════════════════════════════════════
-          MODALS LAYER (z-100)
-          ═══════════════════════════════════════════ */}
-      <LoveLetterModal
-        isOpen={isLetterOpen}
-        onClose={() => setIsLetterOpen(false)}
-      />
+            {/* ═══════════════════════════════════════════
+            MODALS LAYER (z-100)
+            ═══════════════════════════════════════════ */}
+            <LoveLetterModal
+              isOpen={isLetterOpen}
+              onClose={() => setIsLetterOpen(false)}
+            />
+          </div>
+        </MediaProvider>
+      )}
     </>
   );
 }

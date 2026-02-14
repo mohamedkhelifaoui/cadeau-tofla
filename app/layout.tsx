@@ -38,8 +38,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="ltr" className={`${inter.variable} ${amiri.variable}`}>
+    <html
+      lang="ar"
+      dir="ltr"
+      className={`${inter.variable} ${amiri.variable}`}
+      suppressHydrationWarning
+    >
       <body
+        suppressHydrationWarning
         className={`${inter.className} bg-[rgb(10,10,46)] text-[#faf3e0] antialiased custom-scrollbar`}
       >
         {children}

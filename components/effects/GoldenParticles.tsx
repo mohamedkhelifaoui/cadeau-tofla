@@ -11,8 +11,8 @@
 
 import { useState, useEffect } from "react";
 
-/** Number of particles */
-const PARTICLE_COUNT = 25;
+/** Number of particles - reduced for performance */
+const PARTICLE_COUNT = 12;
 
 interface ParticleData {
     id: number;

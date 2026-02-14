@@ -46,7 +46,7 @@ export default function HeroSection({ onOpenLetter }: HeroSectionProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.4, delay: 0.5, ease: "easeOut" }}
             >
-                Dounia Mecili
+                Dounyti🤍
             </motion.h2>
 
             {/* ─── Romantic Subtitle ─── */}

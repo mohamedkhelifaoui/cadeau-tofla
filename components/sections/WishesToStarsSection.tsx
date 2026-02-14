@@ -9,7 +9,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import GlassCard from "@/components/shared/GlassCard";
 
@@ -18,6 +18,8 @@ interface WishStar {
     text: string;
     x: number; // Final X %
     y: number; // Final Y %
+    startX: number; // Start X %
+    startY: number; // Start Y %
     scale: number;
     duration: number;
     rotation: number;
@@ -29,6 +31,22 @@ export default function WishesToStarsSection() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isCollecting, setIsCollecting] = useState(false);
     const [showListModal, setShowListModal] = useState(false);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    // PERSISTENCE: Load wishes on mount
+    useEffect(() => {
+        const saved = localStorage.getItem("dounia_wishes");
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed)) {
+                    setWishes(parsed);
+                }
+            } catch (e) {
+                console.error("Failed to load wishes", e);
+            }
+        }
+    }, []);
 
     const handleAddWish = (e: React.FormEvent) => {
         e.preventDefault();
@@ -38,7 +56,17 @@ export default function WishesToStarsSection() {
 
         const newId = Date.now();
 
-        // Fully random position across viewport (0-100%)
+        // Calculate start position from button
+        let startPos = { x: 50, y: 100 }; // Default fallback
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            startPos = {
+                x: ((rect.left + rect.width / 2) / window.innerWidth) * 100,
+                y: ((rect.top + rect.height / 2) / window.innerHeight) * 100
+            };
+        }
+
+        // Fully random target position across viewport (0-100%)
         const targetPos = {
             x: Math.random() * 100,
             y: Math.random() * 100
@@ -49,13 +77,18 @@ export default function WishesToStarsSection() {
             text: inputValue,
             x: targetPos.x,
             y: targetPos.y,
-            scale: 0.5 + Math.random() * 1.0, // More size variation
-            duration: 2 + Math.random() * 2,  // Random flight time (2-4s)
-            rotation: Math.random() * 360,     // Random rotation
+            startX: startPos.x,
+            startY: startPos.y,
+            scale: 0.5 + Math.random() * 1.0,
+            duration: 2 + Math.random() * 2,
+            rotation: Math.random() * 360,
         };
 
         setTimeout(() => {
-            setWishes((prev) => [...prev, newWish]);
+            const nextWishes = [...wishes, newWish];
+            setWishes(nextWishes);
+            // PERSISTENCE: Save to localStorage
+            localStorage.setItem("dounia_wishes", JSON.stringify(nextWishes));
             setInputValue("");
             setIsSubmitting(false);
         }, 300);
@@ -97,8 +130,8 @@ export default function WishesToStarsSection() {
                         <motion.div
                             key={wish.id}
                             initial={{
-                                left: "50%",
-                                top: "100%", // Start from very bottom
+                                left: `${wish.startX}%`,
+                                top: `${wish.startY}%`,
                                 scale: 0,
                                 opacity: 1,
                             }}
@@ -169,13 +202,14 @@ export default function WishesToStarsSection() {
 
                         <div className="flex gap-4">
                             <motion.button
+                                ref={buttonRef}
                                 whileHover={{ scale: 1.02, textShadow: "0 0 8px rgb(255,255,255)" }}
                                 whileTap={{ scale: 0.98 }}
                                 type="submit"
                                 disabled={isSubmitting}
                                 className={`flex-1 py-4 rounded-xl font-bold text-[#0a0a2e] text-lg transition-all shadow-lg ${isSubmitting
-                                        ? "bg-[#d4af37]/50 cursor-wait"
-                                        : "bg-gradient-to-r from-[#d4af37] via-[#f4c430] to-[#d4af37] bg-[length:200%_auto] hover:bg-[position:right_center] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]"
+                                    ? "bg-[#d4af37]/50 cursor-wait"
+                                    : "bg-gradient-to-r from-[#d4af37] via-[#f4c430] to-[#d4af37] bg-[length:200%_auto] hover:bg-[position:right_center] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]"
                                     }`}
                             >
                                 {isSubmitting ? "Sending..." : "Send to Sky 🚀"}
