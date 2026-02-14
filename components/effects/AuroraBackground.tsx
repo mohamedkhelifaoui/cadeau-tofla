@@ -1,6 +1,6 @@
 /**
  * AuroraBackground — Animated aurora borealis / nebula background
- * ================================================================
+ * ==================================================================
  * Adds beautiful, slow-moving colorful nebula blurs behind all content
  * for a magical, premium cosmic atmosphere.
  */
